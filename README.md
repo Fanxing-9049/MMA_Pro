@@ -39,6 +39,48 @@ cd MMA_Pro
 # 启动服务
 docker-compose up -d
 ```
+## docker-compose 安装
+```bash
+version: '3.8'
+
+services:
+  mma-pro:
+    image: fanxing-9049/mma_pro:latest
+    container_name: mma-pro
+    ports:
+      - "8500:8500"
+    volumes:
+      # 持久化数据目录
+      - ./data:/app/data
+      # 持久化配置文件（可选）
+      - ./config:/app/config
+    environment:
+      # 设置时区
+      - TZ=Asia/Shanghai
+      # MMA Pro配置
+      - MMA_PRO_PORT=8500
+      - MMA_PRO_HOST=0.0.0.0
+      # 其他环境变量
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8500/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - mma-pro-network
+
+networks:
+  mma-pro-network:
+    driver: bridge
+
+volumes:
+  data:
+  config:
+
+```
 
 ## 🎯 核心功能
 
