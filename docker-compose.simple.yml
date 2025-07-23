@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  mma-pro:
+    image: ghcr.io/fanxing-9049/mma_pro:latest
+    container_name: mma-pro-linux
+    ports:
+      - "8500:8500"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - TZ=Asia/Shanghai
+    restart: unless-stopped
